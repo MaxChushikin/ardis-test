@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ardas-test.iml" filepath="$PROJECT_DIR$/.idea/ardas-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../my-project/.idea/my-project.iml" filepath="$PROJECT_DIR$/../my-project/.idea/my-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../symfony-5/.idea/symfony-5.iml" filepath="$PROJECT_DIR$/../symfony-5/.idea/symfony-5.iml" />
     </modules>
   </component>
 </project>

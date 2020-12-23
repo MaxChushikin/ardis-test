@@ -35,6 +35,18 @@
             "./bin/console"
         ]
     },
+    "symfony/debug-bundle": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
+        },
+        "files": [
+            "./config/packages/dev/debug.yaml"
+        ]
+    },
     "symfony/dependency-injection": {
         "version": "v5.2.1"
     },
@@ -135,6 +147,12 @@
     "symfony/string": {
         "version": "v5.2.1"
     },
+    "symfony/translation-contracts": {
+        "version": "v2.3.0"
+    },
+    "symfony/twig-bridge": {
+        "version": "v5.2.1"
+    },
     "symfony/var-dumper": {
         "version": "v5.2.1"
     },
@@ -143,5 +161,8 @@
     },
     "symfony/yaml": {
         "version": "v5.2.1"
+    },
+    "twig/twig": {
+        "version": "v3.1.1"
     }
 }

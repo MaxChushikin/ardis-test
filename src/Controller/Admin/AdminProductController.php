@@ -22,14 +22,6 @@ class AdminProductController extends AbstractController
     }
 
 	/**
-	 * @Route("/admin/product/{slug<\d+>}", name="admin_product_show")
-	 */
-	public function show ()
-	{
-
-	}
-
-	/**
 	 * @Route("/admin/product",  name="admin_product")
 	 * @param ProductRepository $repository
 	 * @return Response
@@ -54,8 +46,18 @@ class AdminProductController extends AbstractController
 		return $this->render('admin/product/list.html.twig', $data);
 	}
 
+
 	/**
-	 * @Route("/admin/product/add/{slug}", name="admin_product_add")
+	 * @Route("/admin/product/{id<\d+>}", name="admin_product_show")
+	 */
+
+	public function show ()
+	{
+
+	}
+
+	/**
+	 * @Route("/admin/product/add/{id<\d+>}", name="admin_product_add")
 	 */
 	public function add ()
 	{
@@ -63,7 +65,7 @@ class AdminProductController extends AbstractController
     }
 
 	/**
-	 * @Route("/admin/product/edit/{slug}", name="admin_product_edit")
+	 * @Route("/admin/product/edit/{id<\d+>}", name="admin_product_edit")
 	 */
 	public function edit ()
 	{
@@ -71,7 +73,7 @@ class AdminProductController extends AbstractController
     }
 
 	/**
-	 * @Route("/admin/product/edit/{slug}", name="admin_product_edit")
+	 * @Route("/admin/product/edit/{id<\d+>}", name="admin_product_edit")
 	 */
 	public function remove ()
 	{

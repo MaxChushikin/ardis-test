@@ -37,7 +37,7 @@ a[data-toggle="collapse"] {
 
 #sidebar {
     width: 250px;
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -78,6 +78,13 @@ ul ul a {
     background: #6d7fcc;
 }
 
+#content {
+    position: relative;
+    width: 100%;
+    margin-left: 250px;
+    padding-bottom: 40px;
+    padding-top: 60px;
+}
 
 
 .dropdown-toggle::after {

@@ -2,14 +2,14 @@
 
 {% block title %}Products{% endblock %}
 
-{% block nav_body %}
-
+{% block body_nav %}
+    <h1>Products</h1>
 {% endblock %}
 
 {% block content_body %}
     <div class="row">
         <div class="col-sm-12">
-            <h1>Manage Comments ({{ pagination.getTotalItemCount() }})</h1>
+
 
             <form>
                 <div class="input-group mb-3">
@@ -28,16 +28,33 @@
                 </div>
             </form>
 
-            <table>
+            <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Article</th>
-                    <th>Author</th>
-                    <th>Comment</th>
-                    <th>Created</th>
+                    <th width="100px" scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th width="200px" scope="col">Price</th>
+                    <th width="150px"></th>
                 </tr>
                 </thead>
                 <tbody>
+                {% for product in pagination %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name.email }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            <a href="{{ path('admin_product_edit', {id: product.id}) }}"><span class="fa fa-pencil"></span></a>
+                            <a href="{{ path('admin_product_remove', {id: product.id}) }}"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No products found
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
 

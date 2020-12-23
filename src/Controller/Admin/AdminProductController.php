@@ -44,9 +44,9 @@ class AdminProductController extends AbstractController
 		$queryBuilder = $repository->getWithSearchQueryBuilder($filter_data);
 
 		$pagination = $paginator->paginate(
-			$queryBuilder, /* query NOT result */
+			$queryBuilder,
 			$request->query->getInt('page', 1),
-			2 /* Limit */
+			2
 		);
 
 		$data['pagination'] = $pagination;

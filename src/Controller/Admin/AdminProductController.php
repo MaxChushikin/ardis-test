@@ -73,7 +73,7 @@ class AdminProductController extends AbstractController
     }
 
 	/**
-	 * @Route("/admin/product/edit/{id<\d+>}", name="admin_product_edit")
+	 * @Route("/admin/product/remove/{id<\d+>}", name="admin_product_remove")
 	 */
 	public function remove ()
 	{

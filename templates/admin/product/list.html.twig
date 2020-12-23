@@ -41,7 +41,7 @@
                 {% for product in pagination %}
                     <tr>
                         <td>{{ product.id }}</td>
-                        <td>{{ product.name.email }}</td>
+                        <td>{{ product.name }}</td>
                         <td>{{ product.price }}</td>
                         <td>
                             <a href="{{ path('admin_product_edit', {id: product.id}) }}"><span class="fa fa-pencil"></span></a>

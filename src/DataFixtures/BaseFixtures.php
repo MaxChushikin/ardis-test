@@ -19,16 +19,14 @@
 
 		abstract protected function loadData(ObjectManager $manager);
 
-		public function load(ObjectManager $manager)
-		{
+		public function load(ObjectManager $manager) {
 			$this->manager = $manager;
 			$this->faker = Factory::create();
 
 			$this->loadData($manager);
 		}
 
-		protected function createMany(int $count, string $groupName, callable $factory)
-		{
+		protected function createMany(int $count, string $groupName, callable $factory)	{
 			for ($i = 0; $i < $count; $i++) {
 				$entity = $factory($i);
 				if (null === $entity) {
@@ -40,22 +38,41 @@
 			}
 		}
 
-		protected function getRandomReference(string $groupName) {
+		protected function getReferencesIndexByGroupName (string $groupName) {
+			$referencesIndex = [];
+
 			if (!isset($this->referencesIndex[$groupName])) {
 				$this->referencesIndex[$groupName] = [];
 
 				foreach ($this->referenceRepository->getReferences() as $key => $ref) {
 					if (strpos($key, $groupName.'_') === 0) {
-						$this->referencesIndex[$groupName][] = $key;
+						$referencesIndex[$groupName][] = $key;
 					}
 				}
 			}
 
-			if (empty($this->referencesIndex[$groupName])) {
+			if (empty($referencesIndex[$groupName])) {
 				throw new \Exception(sprintf('Cannot find any references for class "%s"', $groupName));
 			}
 
-			$randomReferenceKey = $this->faker->randomElement($this->referencesIndex[$groupName]);
+			return $referencesIndex;
+		}
+
+		protected function getAllReferences (string $groupName)	{
+			$references = [];
+
+			$referencesIndex = $this->getReferencesIndexByGroupName($groupName);
+			
+			foreach ($referencesIndex[$groupName] as $reference) {
+				$references[] = $this->getReference($reference);
+			}
+		}
+
+		protected function getRandomReference(string $groupName) {
+
+			$referencesIndex = $this->getReferencesIndexByGroupName($groupName);
+
+			$randomReferenceKey = $this->faker->randomElement($referencesIndex[$groupName]);
 
 			return $this->getReference($randomReferenceKey);
 		}
@@ -68,4 +85,5 @@
 			}
 			return $references;
 		}
+
 	}

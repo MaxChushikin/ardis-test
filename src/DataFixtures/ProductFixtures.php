@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Product;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class ProductFixtures extends BaseFixtures
 {
 	protected function loadData (ObjectManager $manager)
 	{
-		$this->createMany(50, 'product', function($i){
+		$this->createMany(50, 'products', function($i){
 
 			$product = new Product();
 

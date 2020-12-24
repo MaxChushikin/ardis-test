@@ -14,7 +14,7 @@ class AttributeFixtures extends BaseFixtures
 
 	protected function loadData (ObjectManager $manager)
 	{
-		$this->createMany(count($this->attributeNames), 'attribute', function($i){
+		$this->createMany(count($this->attributeNames), 'attributes', function($i){
 
 			$attribute = new Attribute();
 

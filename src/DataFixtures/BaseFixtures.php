@@ -66,6 +66,8 @@
 			foreach ($referencesIndex[$groupName] as $reference) {
 				$references[] = $this->getReference($reference);
 			}
+
+			return $references;
 		}
 
 		protected function getRandomReference(string $groupName) {
@@ -85,5 +87,4 @@
 			}
 			return $references;
 		}
-
 	}

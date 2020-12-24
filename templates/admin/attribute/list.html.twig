@@ -1,0 +1,61 @@
+{% extends 'admin/admin_content_base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body_nav %}
+    <h1>Attributes</h1>
+{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form>
+                <div class="input-group mb-3">
+                    <input type="text"
+                           name="search"
+                           value="{{ app.request.query.get('search') }}"
+                           class="form-control"
+                           placeholder="Search..."
+                    >
+                    <div class="input-group-append">
+                        <button type="submit"
+                                class="btn btn-outline-secondary">
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th width="100px" scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th width="150px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for attribute in pagination %}
+                    <tr>
+                        <td>{{ attribute.id }}</td>
+                        <td>{{ attribute.name }}</td>
+                        <td>
+                            <a href="{{ path('admin_attribute_edit', {id: attribute.id}) }}"><span class="fa fa-pencil"></span></a>
+                            <a href="{{ path('admin_attribute_remove', {id: attribute.id}) }}"><span class="fa fa-trash"></span></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No attributes found
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}

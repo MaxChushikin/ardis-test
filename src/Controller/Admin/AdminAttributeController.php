@@ -2,21 +2,22 @@
 
 	namespace App\Controller\Admin;
 
-	use App\Repository\ProductRepository;
+	use App\Repository\AttributeRepository;
 	use Knp\Component\Pager\PaginatorInterface;
 	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 	use Symfony\Component\HttpFoundation\Request;
 	use Symfony\Component\HttpFoundation\Response;
 	use Symfony\Component\Routing\Annotation\Route;
 
-	class AdminProductController extends AbstractController
+	class AdminAttributeController extends AbstractController
 	{
 		/**
-		 * @Route("/admin/product",  name="admin_product_list")
-		 * @param ProductRepository $repository
+		 * @Route("/admin/attribute",  name="admin_attribute_list")
+		 * @param AttributeRepository $repository
 		 * @return Response
 		 */
-		public function list (ProductRepository $repository, Request $request, PaginatorInterface $paginator)
+		public function list (AttributeRepository $repository, Request $request, PaginatorInterface $paginator)
 		{
 			$data = [];
 			$filter_data = [];
@@ -33,29 +34,12 @@
 
 			$data['pagination'] = $pagination;
 
-			return $this->render('admin/product/list.html.twig', $data);
+			return $this->render('admin/attribute/list.html.twig', $data);
 		}
 
 
 		/**
-		 * @Route("/admin/product/{id<\d+>}", name="admin_product_show")
-		 */
-
-		public function show ()
-		{
-
-		}
-
-		/**
-		 * @Route("/admin/product/add/{id<\d+>}", name="admin_product_add")
-		 */
-		public function add ()
-		{
-
-		}
-
-		/**
-		 * @Route("/admin/product/edit/{id<\d+>}", name="admin_product_edit")
+		 * @Route("/admin/attribute/edit/{id<\d+>}", name="admin_attribute_edit")
 		 */
 		public function edit ()
 		{
@@ -63,11 +47,10 @@
 		}
 
 		/**
-		 * @Route("/admin/product/remove/{id<\d+>}", name="admin_product_remove")
+		 * @Route("/admin/attribute/remove/{id<\d+>}", name="admin_attribute_remove")
 		 */
 		public function remove ()
 		{
 
 		}
-
 	}

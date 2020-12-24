@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Attribute;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,18 @@ class AttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, Attribute::class);
     }
 
-    // /**
-    //  * @return Attribute[] Returns an array of Attribute objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+	public function getWithSearchQueryBuilder (?array $filter_data): QueryBuilder
+	{
+		$qb = $this->createQueryBuilder('a');
 
-    /*
-    public function findOneBySomeField($value): ?Attribute
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+		if (isset($filter_data['search']) && !empty($filter_data['search'])){
+			$qb->andWhere('a.name LIKE :search')
+				->setParameter('search', '%' . $filter_data['search'] . '%');
+			;
+		}
+
+		return $qb
+			->orderBy('a.id', 'DESC')
+			;
+	}
 }

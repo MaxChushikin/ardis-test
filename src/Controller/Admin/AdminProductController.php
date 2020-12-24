@@ -38,7 +38,7 @@ class AdminProductController extends AbstractController
 		$pagination = $paginator->paginate(
 			$queryBuilder,
 			$request->query->getInt('page', 1),
-			2
+			10
 		);
 
 		$data['pagination'] = $pagination;

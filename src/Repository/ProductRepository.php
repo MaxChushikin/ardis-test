@@ -31,7 +31,7 @@ class ProductRepository extends ServiceEntityRepository
 		}
 
 		return $qb
-			->orderBy('p.createdAt', 'DESC')
+			->orderBy('p.id', 'DESC')
 			;
 	}
 }

@@ -23,7 +23,7 @@ class AttributeValue
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="attibuteValue")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="attributeValue", cascade={"persist"})
      */
     private $product;
 

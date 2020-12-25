@@ -1,0 +1,21 @@
+{{ form_start(productForm) }}
+
+    {{ form_row(productForm.name) }}
+    {{ form_row(productForm.price) }}
+
+    <div id="product-attribute"
+        data-prototype="{{ form_widget(productForm.attributeValue.vars.prototype)|e }}"
+        data-widget-tags="{{ '<div></div>'|e }}"
+        data-widget-counter="{{ productForm.attributeValue|length }}">
+    </div>
+
+    <div class="form-group">
+        <button type="button"
+                class="add-attribute btn btn-success"
+                data-list-selector="#product-attribute">Add attribute</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+
+{{ form_end(productForm) }}
+

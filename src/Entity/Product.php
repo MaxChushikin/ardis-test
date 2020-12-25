@@ -7,12 +7,15 @@
 	use Doctrine\Common\Collections\Collection;
 	use Doctrine\ORM\Mapping as ORM;
 	use Gedmo\Mapping\Annotation as Gedmo;
+	use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 	/**
 	 * @ORM\Entity(repositoryClass=ProductRepository::class)
 	 */
 	class Product
 	{
+		use TimestampableEntity;
+
 		/**
 		 * @ORM\Id
 		 * @ORM\GeneratedValue
@@ -37,19 +40,9 @@
 		private $price;
 
 		/**
-		 * @ORM\Column(type="datetime")
+		 * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="product", cascade={"persist"})
 		 */
-		private $createdAt;
-
-		/**
-		 * @ORM\Column(type="datetime")
-		 */
-		private $updatedAt;
-
-		/**
-		 * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="product")
-		 */
-		private $attibuteValue;
+		private $attributeValue;
 
 		/**
 		 * @ORM\ManyToMany(targetEntity=Attribute::class, inversedBy="products")
@@ -58,7 +51,7 @@
 
 		public function __construct ()
 		{
-			$this->attibuteValue = new ArrayCollection();
+			$this->attributeValue = new ArrayCollection();
 			$this->attribute = new ArrayCollection();
 		}
 
@@ -91,30 +84,6 @@
 			return $this;
 		}
 
-		public function getCreatedAt (): ?\DateTimeInterface
-		{
-			return $this->createdAt;
-		}
-
-		public function setCreatedAt (\DateTimeInterface $createdAt): self
-		{
-			$this->createdAt = $createdAt;
-
-			return $this;
-		}
-
-		public function getUpdatedAt (): ?\DateTimeInterface
-		{
-			return $this->updatedAt;
-		}
-
-		public function setUpdatedAt (\DateTimeInterface $updatedAt): self
-		{
-			$this->updatedAt = $updatedAt;
-
-			return $this;
-		}
-
 		public function getSlug (): ?string
 		{
 			return $this->slug;
@@ -130,27 +99,27 @@
 		/**
 		 * @return Collection|AttributeValue[]
 		 */
-		public function getAttibuteValue (): Collection
+		public function getAttributeValue (): Collection
 		{
-			return $this->attibuteValue;
+			return $this->attributeValue;
 		}
 
-		public function addAttibuteValue (AttributeValue $attibuteValue): self
+		public function addAttributeValue (AttributeValue $attributeValue): self
 		{
-			if (!$this->attibuteValue->contains($attibuteValue)) {
-				$this->attibuteValue[] = $attibuteValue;
-				$attibuteValue->setProduct($this);
+			if (!$this->attributeValue->contains($attributeValue)) {
+				$this->attributeValue[] = $attributeValue;
+				$attributeValue->setProduct($this);
 			}
 
 			return $this;
 		}
 
-		public function removeAttibuteValue (AttributeValue $attibuteValue): self
+		public function removeAttributeValue (AttributeValue $attributeValue): self
 		{
-			if ($this->attibuteValue->removeElement($attibuteValue)) {
+			if ($this->attributeValue->removeElement($attributeValue)) {
 				// set the owning side to null (unless already changed)
-				if ($attibuteValue->getProduct() === $this) {
-					$attibuteValue->setProduct(NULL);
+				if ($attributeValue->getProduct() === $this) {
+					$attributeValue->setProduct(NULL);
 				}
 			}
 

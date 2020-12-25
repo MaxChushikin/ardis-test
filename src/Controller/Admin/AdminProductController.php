@@ -58,6 +58,7 @@
 
 			$form = $this->createForm(ProductFormType::class);
 			$form->handleRequest($request);
+
 			if($form->isSubmitted() && $form->isValid()){
 				/** @var Product $product */
 				$product = $form->getData();

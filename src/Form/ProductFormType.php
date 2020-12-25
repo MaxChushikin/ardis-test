@@ -19,17 +19,18 @@ class ProductFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-            	'help' 			=> "Type product name",
+            	'label' 	=> "Type product name",
 				'required' 		=> TRUE,
 			])
             ->add('price', MoneyType::class, [
-				'help' 			=> "Type product price",
+				'label' 	=> "Type product price",
 				'divisor' 		=> 100,
 				'required' 		=> TRUE,
 			])
-			->add('attributes', CollectionType::class, [
+			->add('attributeValue', CollectionType::class, [
 				'entry_type'	=> ProductAttributeValueType::class,
 				'allow_add' 	=> true,
+				'allow_delete' 	=> true,
 				'prototype' 	=> true,
 			])
 		;

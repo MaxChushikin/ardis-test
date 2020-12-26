@@ -40,7 +40,7 @@
 		private $price;
 
 		/**
-		 * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="product", cascade={"persist"})
+		 * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="product", cascade={"all"})
 		 */
 		private $attributeValue;
 

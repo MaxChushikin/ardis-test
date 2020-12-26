@@ -44,8 +44,9 @@
                         <td>{{ product.name }}</td>
                         <td>{{ product.price }}</td>
                         <td>
-                            <a href="{{ path('admin_product_edit', {id: product.id}) }}"><span class="fa fa-pencil"></span></a>
-                            <a href="{{ path('admin_product_remove', {id: product.id}) }}"><span class="fa fa-trash"></span></a>
+
+                            <a href="{{ path('admin_product_edit', {id: product.id}) }}"><button type="button" class="btn btn-primary"><span class="fa fa-edit"></span></button></a>
+                            <a href="{{ path('admin_product_remove', {id: product.id}) }}"><button type="button" class="btn btn-danger"><span class="fa fa-trash"></span></button></a>
                         </td>
                     </tr>
                 {% else %}

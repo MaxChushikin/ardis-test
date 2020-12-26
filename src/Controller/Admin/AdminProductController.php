@@ -79,17 +79,47 @@
 		/**
 		 * @Route("/admin/product/edit/{id<\d+>}", name="admin_product_edit")
 		 */
-		public function edit ()
+		public function edit (Product $product, EntityManagerInterface $em, Request $request)
 		{
+			$data = [];
 
+			$form = $this->createForm(ProductFormType::class, $product);
+			$form->handleRequest($request);
+
+			if($form->isSubmitted() && $form->isValid()){
+				/** @var Product $product */
+				$product = $form->getData();
+
+				$em->persist($product);
+				$em->flush();
+
+				$this->addFlash("success", 'Product Updates!');
+
+				return $this->redirectToRoute('admin_product_list');
+			}
+
+			$data['productForm'] = $form->createView();
+
+			return $this->render('admin/product/add.html.twig', $data);
 		}
 
 		/**
 		 * @Route("/admin/product/remove/{id<\d+>}", name="admin_product_remove")
 		 */
-		public function remove ()
+		public function remove (Product $product, $id)
 		{
 
-		}
+			if ($product) {
+				// debated point: should we 404 on an unknown nickname?
+				// or should we just return a nice 204 in all cases?
+				// we're doing the latter
+				$em = $this->getDoctrine()->getManager();
+				$em->remove($product);
+				$em->flush();
 
+				$this->addFlash("success", 'Product created!');
+
+				return $this->redirectToRoute('admin_product_list');
+			}
+		}
 	}

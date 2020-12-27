@@ -30,13 +30,13 @@
 
 			$queryBuilder = $repository->getWithSearchQueryBuilder($filter_data);
 
-			$pagination = $paginator->paginate(
+			$attributes = $paginator->paginate(
 				$queryBuilder,
 				$request->query->getInt('page', 1),
 				10
 			);
 
-			$data['pagination'] = $pagination;
+			$data['attributes'] = $attributes;
 
 			return $this->render('admin/attribute/list.html.twig', $data);
 		}

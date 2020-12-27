@@ -2,7 +2,11 @@
 
 	namespace App\Controller\Admin;
 
+	use App\Entity\Attribute;
+	use App\Entity\Product;
+	use App\Form\AttributeFormType;
 	use App\Repository\AttributeRepository;
+	use Doctrine\ORM\EntityManagerInterface;
 	use Knp\Component\Pager\PaginatorInterface;
 	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -37,20 +41,81 @@
 			return $this->render('admin/attribute/list.html.twig', $data);
 		}
 
+		/**
+		 * @Route("/admin/attribute/add", name="admin_attribute_add")
+		 */
+		public function add (EntityManagerInterface $em, Request $request)
+		{
+			$data = [];
+
+			$form = $this->createForm(AttributeFormType::class);
+			$form->handleRequest($request);
+
+			if ($form->isSubmitted() && $form->isValid()) {
+				$product = $form->getData();
+
+				$em->persist($product);
+				$em->flush();
+
+				$this->addFlash("success", 'Attribute created!');
+
+				return $this->redirectToRoute('admin_attribute_list');
+			}
+
+			$data['attributeForm'] = $form->createView();
+
+			$data['text_title'] = 'Add attribute';
+
+			return $this->render('admin/attribute/form.html.twig', $data);
+		}
 
 		/**
 		 * @Route("/admin/attribute/edit/{id<\d+>}", name="admin_attribute_edit")
 		 */
-		public function edit ()
+		public function edit (Attribute $attribute, EntityManagerInterface $em, Request $request)
 		{
+			$data = [];
 
+			$form = $this->createForm(AttributeFormType::class, $attribute);
+			$form->handleRequest($request);
+
+			if ($form->isSubmitted() && $form->isValid()) {
+				$product = $form->getData();
+
+				$em->persist($product);
+				$em->flush();
+
+				$this->addFlash("success", 'Attribute updated!');
+
+				return $this->redirectToRoute('admin_attribute_list');
+			}
+
+			$data['attributeForm'] = $form->createView();
+
+			$data['text_title'] = 'Edit attribute';
+
+			return $this->render('admin/attribute/form.html.twig', $data);
 		}
 
 		/**
 		 * @Route("/admin/attribute/remove/{id<\d+>}", name="admin_attribute_remove")
 		 */
-		public function remove ()
+		public function remove (Attribute $attribute)
 		{
+			if ($attribute) {
+				$name = $attribute->getName();
 
+				if ($count = $attribute->getAttributeValues()->count()) {
+					$this->addFlash("error", "You can`t remove \"{$name}\". Attribute belongs to {$count} products");
+				} else {
+					$em = $this->getDoctrine()->getManager();
+					$em->remove($attribute);
+					$em->flush();
+
+					$this->addFlash("success", "Attribute \"{$name}\" deleted!");
+				}
+
+				return $this->redirectToRoute('admin_attribute_list');
+			}
 		}
 	}

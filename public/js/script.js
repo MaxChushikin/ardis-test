@@ -1,26 +1,35 @@
 $(document).ready(function () {
+    //Form Submit for IE Browser
+    $('button[type=\'submit\']').on('click', function (e ) {
+        if ($("form[name$='_form']").length > 0) {
+            e.preventDefault();
+            $("form[name$='_form']").submit();
+        }
+    });
+
     $('.add-attribute').click(function (e) {
-        var list = $($(this).attr('data-list-selector'));
+        var element = $(this);
+        var list = $(this).data('list-element');
+
+
+
         // Try to find the counter of the list or use the length of the list
-        var counter = list.data('widget-counter') || list.children().length;
+        var counter = element.data('widget-counter') || $(list).children().length;
 
         // grab the prototype template
-        var newWidget = list.attr('data-prototype');
+        var newWidget = element.attr('data-prototype');
+
         // replace the "__name__" used in the id and name of the prototype
         // with a number that's unique to your emails
         // end name attribute looks like name="contact[emails][2]"
-        newWidget = newWidget.replace(/__name__/g, counter);
+        var newElem = newWidget.replace(/__name__/g, counter);
         // Increase the counter
 
-        // create a new list element and add it to the list
-        var newElem = $(list.attr('data-widget-tags')).html(newWidget + '<div class="form-group"><button type="button" class="remove-attribute btn btn-danger" data-widget-id="#product_form_attribute_' + counter + '">Remove attribute</button></div>');
-
-        newElem.appendTo(list);
-
+        $(list).append(newElem);
 
         counter++;
         // And store it, the length cannot be used if deleting widgets is allowed
-        list.data('widget-counter', counter);
+        element.data('widget-counter', counter);
     });
 
 
@@ -29,7 +38,6 @@ $(document).ready(function () {
 
         console.log(widget_id);
 
-        $(this).closest('div').prev().remove();
-        $(this).closest('div').remove();
+        $(this).closest('tr').remove();
     });
 });

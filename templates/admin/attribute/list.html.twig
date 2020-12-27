@@ -1,15 +1,19 @@
 {% extends 'admin/admin_content_base.html.twig' %}
 
-{% block title %}Products{% endblock %}
+{% block title %}Attributes{% endblock %}
 
 {% block body_nav %}
-    <h1>Attributes</h1>
+    <div class="container-fluid">
+        <h1>Attributes</h1>
+        <div class="pull-right">
+            <a href="{{ path('admin_attribute_add') }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_body %}
     <div class="row">
         <div class="col-sm-12">
-
             <form>
                 <div class="input-group mb-3">
                     <input type="text"
@@ -30,9 +34,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th width="100px" scope="col">#</th>
+                    <th width="60px" scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th width="150px"></th>
+                    <th width="120px"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,8 +45,8 @@
                         <td>{{ attribute.id }}</td>
                         <td>{{ attribute.name }}</td>
                         <td>
-                            <a href="{{ path('admin_attribute_edit', {id: attribute.id}) }}"><span class="fa fa-pencil"></span></a>
-                            <a href="{{ path('admin_attribute_remove', {id: attribute.id}) }}"><span class="fa fa-trash"></span></a>
+                            <a class="btn btn-primary" href="{{ path('admin_attribute_edit', {id: attribute.id}) }}"><span class="fa fa-edit"></span></a>
+                            <a class="btn btn-danger" href="{{ path('admin_attribute_remove', {id: attribute.id}) }}" onclick="return confirm('Are you sure you want to delete {{ attribute.name }}?');"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
                 {% else %}

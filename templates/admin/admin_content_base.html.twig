@@ -1,20 +1,16 @@
 {% extends '/admin/admin_base.html.twig' %}
 
 {% block body %}
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                {% block body_nav %}
-                {% endblock %}
-            </div>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        {% block body_nav %}
+        {% endblock %}
+    </nav>
 
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class=" p-3 mt-4">
-                    {% block content_body %}
-                    {% endblock %}
-                </div>
+                {% block content_body %}
+                {% endblock %}
             </div>
         </div>
     </div>

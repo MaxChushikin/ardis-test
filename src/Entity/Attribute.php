@@ -6,6 +6,7 @@ use App\Repository\AttributeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AttributeRepository::class)
@@ -20,6 +21,9 @@ class Attribute
     private $id;
 
     /**
+	 * @Assert\NotBlank(message="You should type Attribute name")
+	 * @Assert\Length(min=3, max=256, minMessage="Length must greater then 3 chars", maxMessage="Length must lower then 255 chars")
+	 *
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
@@ -30,12 +34,12 @@ class Attribute
     private $sortOrder;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="Attribute")
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="attribute", cascade={"persist"})
      */
     private $products;
 
     /**
-     * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="attribute")
+     * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="attribute", cascade={"persist"})
      */
     private $attributeValues;
 
@@ -55,7 +59,7 @@ class Attribute
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -92,15 +96,6 @@ class Attribute
         return $this;
     }
 
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            $product->removeAttribute($this);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|AttributeValue[]
      */
@@ -114,18 +109,6 @@ class Attribute
         if (!$this->attributeValues->contains($attributeValue)) {
             $this->attributeValues[] = $attributeValue;
             $attributeValue->setAttribute($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttributeValue(AttributeValue $attributeValue): self
-    {
-        if ($this->attributeValues->removeElement($attributeValue)) {
-            // set the owning side to null (unless already changed)
-            if ($attributeValue->getAttribute() === $this) {
-                $attributeValue->setAttribute(null);
-            }
         }
 
         return $this;

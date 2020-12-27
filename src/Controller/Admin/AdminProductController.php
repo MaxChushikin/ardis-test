@@ -22,19 +22,22 @@
 		public function list (ProductRepository $repository, Request $request, PaginatorInterface $paginator)
 		{
 			$data = [];
-			$filter_data = [];
 
-			$filter_data['search'] = $request->query->get('search');
+			$filter_data['name'] = $request->query->get('name');
 
 			$queryBuilder = $repository->getWithSearchQueryBuilder($filter_data);
 
-			$pagination = $paginator->paginate(
+			$products = $paginator->paginate(
 				$queryBuilder,
 				$request->query->getInt('page', 1),
-				10
+				$request->query->get('limit',10),
+				[
+					'defaultSortFieldName'      => 'p.id',
+					'defaultSortDirection' 		=> 'desc'
+				]
 			);
 
-			$data['pagination'] = $pagination;
+			$data['products'] = $products;
 
 			return $this->render('admin/product/list.html.twig', $data);
 		}
@@ -73,7 +76,9 @@
 
 			$data['productForm'] = $form->createView();
 
-			return $this->render('admin/product/add.html.twig', $data);
+			$data['text_title'] = 'Add product';
+
+			return $this->render('admin/product/form.html.twig', $data);
 		}
 
 		/**
@@ -100,24 +105,26 @@
 
 			$data['productForm'] = $form->createView();
 
-			return $this->render('admin/product/add.html.twig', $data);
+			$data['text_title'] = 'Edit product';
+
+			return $this->render('admin/product/form.html.twig', $data);
 		}
 
 		/**
 		 * @Route("/admin/product/remove/{id<\d+>}", name="admin_product_remove")
 		 */
-		public function remove (Product $product, $id)
+		public function remove (Product $product)
 		{
-
 			if ($product) {
-				// debated point: should we 404 on an unknown nickname?
-				// or should we just return a nice 204 in all cases?
-				// we're doing the latter
+				$name = $product->getName();
+
 				$em = $this->getDoctrine()->getManager();
 				$em->remove($product);
 				$em->flush();
 
-				$this->addFlash("success", 'Product created!');
+				$this->addFlash("success", "Attribute \"{$name}\" deleted!");
+
+				$this->addFlash("success", 'Product deleted!');
 
 				return $this->redirectToRoute('admin_product_list');
 			}

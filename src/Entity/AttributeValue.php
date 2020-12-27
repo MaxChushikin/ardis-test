@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AttributeValueRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AttributeValueRepository::class)
@@ -18,17 +19,20 @@ class AttributeValue
     private $id;
 
     /**
+	 * @Assert\NotBlank(message="You should type Attribte value")
+	 * @Assert\Length(min=3, max=256, minMessage="Length must greater then 3 chars", maxMessage="Length must lower then 255 chars")
+	 *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="attributeValue", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="attributeValue", cascade={"persist"})
      */
     private $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Attribute::class, inversedBy="attributeValues")
+     * @ORM\ManyToOne(targetEntity=Attribute::class, inversedBy="attributeValues", cascade={"persist"})
      */
     private $attribute;
 
@@ -43,7 +47,7 @@ class AttributeValue
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 

@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductAttributeValueType extends AbstractType
+class ProductAttributeValueFormType extends AbstractType
 {
 	private $attributeRepository;
 
@@ -25,11 +25,14 @@ class ProductAttributeValueType extends AbstractType
         $builder
             ->add('attribute', EntityType::class, [
             	'class'			=> Attribute::class,
-				'choice_label' => function(Attribute $attribute) {
+				'choice_label' 	=> function(Attribute $attribute) {
 					return $attribute->getName();
 				}
 			])
-			->add('name', TextType::class);
+			->add('name', TextType::class, [
+				'required'   => true,
+				'empty_data' => 'No value',
+			]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

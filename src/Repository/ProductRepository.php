@@ -24,9 +24,9 @@ class ProductRepository extends ServiceEntityRepository
 	{
 		$qb = $this->createQueryBuilder('p');
 
-		if (isset($filter_data['search']) && !empty($filter_data['search'])){
-			$qb->andWhere('p.name LIKE :search')
-				->setParameter('search', '%' . $filter_data['search'] . '%');
+		if (isset($filter_data['name']) && !empty($filter_data['name'])){
+			$qb->where('p.name LIKE :name')
+				->setParameter('name', '%' . $filter_data['name'] . '%');
 			;
 		}
 

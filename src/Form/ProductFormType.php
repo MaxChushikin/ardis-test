@@ -4,10 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,19 +16,21 @@ class ProductFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-            	'label' 	=> "Type product name",
+            	'label' 		=> "Type product name",
 				'required' 		=> TRUE,
 			])
             ->add('price', MoneyType::class, [
-				'label' 	=> "Type product price",
-				'divisor' 		=> 100,
+            	'html5'			=> true,
+            	'currency'		=> 'USD',
+				'label' 		=> "Type product price",
 				'required' 		=> TRUE,
+				'scale' => 2,
 			])
 			->add('attributeValue', CollectionType::class, [
-				'entry_type'	=> ProductAttributeValueType::class,
+				'entry_type'	=> ProductAttributeValueFormType::class,
 				'allow_add' 	=> true,
-				'allow_delete' 	=> true,
-				'prototype' 	=> true,
+				'entry_options' => ['label' => false],
+				'allow_extra_fields' => true
 			])
 		;
     }

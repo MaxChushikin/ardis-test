@@ -3,19 +3,22 @@
 {% block title %}Products{% endblock %}
 
 {% block body_nav %}
-    <h1>Products</h1>
+    <div class="container-fluid">
+        <h1>Products</h1>
+        <div class="pull-right">
+            <a href="{{ path('admin_product_add') }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_body %}
     <div class="row">
         <div class="col-sm-12">
-
-
             <form>
                 <div class="input-group mb-3">
                     <input type="text"
-                           name="search"
-                           value="{{ app.request.query.get('search') }}"
+                           name="name"
+                           value="{{ app.request.query.get('name') }}"
                            class="form-control"
                            placeholder="Search..."
                     >
@@ -28,25 +31,26 @@
                 </div>
             </form>
 
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="products-table">
                 <thead>
                 <tr>
-                    <th width="100px" scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th width="200px" scope="col">Price</th>
-                    <th width="150px"></th>
+                    <th {% if products.isSorted('p.id') %} class="sorted"{% endif %} width="60px" scope="col">{{ knp_pagination_sortable(products, '#'|trans, 'p.id') }}</th>
+                    <th {% if products.isSorted('p.name') %} class="sorted"{% endif %} scope="col">{{ knp_pagination_sortable(products, 'Name'|trans, 'p.name') }}</th>
+                    <th {% if products.isSorted('p.price') %} class="sorted"{% endif %} width="120px" scope="col">{{ knp_pagination_sortable(products, 'Price'|trans, 'p.price') }}</th>
+                    <th {% if products.isSorted('p.createdAt') %} class="sorted"{% endif %} width="170px" scope="col">{{ knp_pagination_sortable(products, 'Date Added'|trans, 'p.createdAt') }}</th>
+                    <th width="120px"></th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for product in pagination %}
+                {% for product in products %}
                     <tr>
                         <td>{{ product.id }}</td>
                         <td>{{ product.name }}</td>
-                        <td>{{ product.price }}</td>
+                        <td>{{ product.price|format_currency('USD') }}</td>
+                        <td>{{ product.createdAt|date("m.d.Y H:i" ) }}</td>
                         <td>
-
-                            <a href="{{ path('admin_product_edit', {id: product.id}) }}"><button type="button" class="btn btn-primary"><span class="fa fa-edit"></span></button></a>
-                            <a href="{{ path('admin_product_remove', {id: product.id}) }}"><button type="button" class="btn btn-danger"><span class="fa fa-trash"></span></button></a>
+                            <a class="btn btn-primary" href="{{ path('admin_product_edit', {id: product.id}) }}"><span class="fa fa-edit"></span></a>
+                            <a class="btn btn-danger" href="{{ path('admin_product_remove', {id: product.id}) }}" onclick="return confirm('Are you sure you want to delete {{ product.name }}?');"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
                 {% else %}
@@ -59,7 +63,7 @@
                 </tbody>
             </table>
 
-            {{ knp_pagination_render(pagination) }}
+            {{ knp_pagination_render(products) }}
         </div>
     </div>
 {% endblock %}

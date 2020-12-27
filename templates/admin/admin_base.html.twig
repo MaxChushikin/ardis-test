@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     {% endblock %}
 
-
     {% block javascripts %}
         <!-- Font Awesome JS -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -23,12 +22,6 @@
         <script src="{{ asset('js/script.js') }}"></script>
     {% endblock %}
 </head>
-
-{% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
 
 <div class="wrapper">
     <!-- Sidebar -->
@@ -45,9 +38,6 @@
                         <a href="{{ path('admin_product_list') }}">Products</a>
                     </li>
                     <li>
-                        <a href="#">Categories</a>
-                    </li>
-                    <li>
                         <a href="{{ path('admin_attribute_list') }}">Attributes</a>
                     </li>
                 </ul>
@@ -56,6 +46,20 @@
     </nav>
 
     <div id="content">
+            <div class="container-fluid">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+
         {% block body %}{% endblock %}
     </div>
 </div>

@@ -7,15 +7,13 @@
 	use Doctrine\Common\Collections\Collection;
 	use Doctrine\ORM\Mapping as ORM;
 	use Gedmo\Mapping\Annotation as Gedmo;
-	use Gedmo\Timestampable\Traits\TimestampableEntity;
+	use Symfony\Component\Validator\Constraints as Assert;
 
 	/**
 	 * @ORM\Entity(repositoryClass=ProductRepository::class)
 	 */
 	class Product
 	{
-		use TimestampableEntity;
-
 		/**
 		 * @ORM\Id
 		 * @ORM\GeneratedValue
@@ -24,6 +22,9 @@
 		private $id;
 
 		/**
+		 * @Assert\NotBlank(message="You should type product Name")
+		 * @Assert\Length(min=3, max=256, minMessage="Length must greater then 3 chars", maxMessage="Length must lower then 255 chars")
+		 *
 		 * @ORM\Column(type="string", length=255)
 		 */
 		private $name;
@@ -35,9 +36,28 @@
 		private $slug;
 
 		/**
+		 * @Assert\NotBlank(message="You should type product Price")
+		 * @Assert\Positive(message="Price must be greater then 0")
+		 *
 		 * @ORM\Column(type="float")
 		 */
 		private $price;
+
+		/**
+		 * @var \DateTime $createdAt
+		 *
+		 * @Gedmo\Timestampable(on="create")
+		 * @ORM\Column(type="datetime")
+		 */
+		private $createdAt;
+
+		/**
+		 * @var \DateTime $updatedAt
+		 *
+		 * @Gedmo\Timestampable(on="update")
+		 * @ORM\Column(type="datetime")
+		 */
+		private $updatedAt;
 
 		/**
 		 * @ORM\OneToMany(targetEntity=AttributeValue::class, mappedBy="product", cascade={"all"})
@@ -45,7 +65,7 @@
 		private $attributeValue;
 
 		/**
-		 * @ORM\ManyToMany(targetEntity=Attribute::class, inversedBy="products")
+		 * @ORM\ManyToMany(targetEntity=Attribute::class, inversedBy="products", cascade={"all"})
 		 */
 		private $attribute;
 
@@ -65,7 +85,7 @@
 			return $this->name;
 		}
 
-		public function setName (string $name): self
+		public function setName (?string $name): self
 		{
 			$this->name = $name;
 
@@ -77,7 +97,7 @@
 			return $this->price;
 		}
 
-		public function setPrice (float $price): self
+		public function setPrice (?float $price): self
 		{
 			$this->price = $price;
 
@@ -94,6 +114,27 @@
 			$this->slug = $slug;
 
 			return $this;
+		}
+
+
+		public function getCreatedAt()
+		{
+			return $this->createdAt;
+		}
+
+		public function getUpdatedAt()
+		{
+			return $this->updatedAt;
+		}
+
+		public function setCreatedAt()
+		{
+			return $this->createdAt;
+		}
+
+		public function setUpdatedAt()
+		{
+			return $this->updatedAt;
 		}
 
 		/**
@@ -139,13 +180,6 @@
 			if (!$this->attribute->contains($attribute)) {
 				$this->attribute[] = $attribute;
 			}
-
-			return $this;
-		}
-
-		public function removeAttribute (Attribute $attribute): self
-		{
-			$this->attribute->removeElement($attribute);
 
 			return $this;
 		}
